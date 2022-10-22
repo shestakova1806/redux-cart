@@ -19,7 +19,11 @@ export const fetchCartData = () => {
 
     try {
       const cartData = await fetchData();
-      dispatch(cartActions.replaceCart(cartData));
+      dispatch(
+        cartActions.replaceCart({
+          items: cartData.items || [],
+        })
+      );
     } catch (error) {
       dispatch(
         uiActions.showNotification({
@@ -45,7 +49,7 @@ export const sendCartData = (cart) => {
     const sendRequest = async () => {
       const responce = await fetch(
         'https://redux-cart-8e499-default-rtdb.europe-west1.firebasedatabase.app/cart.json',
-        { method: 'PUT', body: JSON.stringify(cart) }
+        { method: 'PUT', body: JSON.stringify({ items: cart.items }) }
       );
 
       if (!responce.ok) {
